@@ -167,11 +167,10 @@ ul, ol { list-style: none; }
   gap: 0.9rem;
   justify-content: center;
   flex-wrap: wrap;
-  margin-bottom: 4.5rem;
 }
 .hero__stats {
   max-width: 900px;
-  margin: 0 auto;
+  margin: 4rem auto 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
@@ -192,10 +191,33 @@ ul, ol { list-style: none; }
 }
 .stat__unit { color: var(--c-gold); font-weight: 700; margin-left: 2px; }
 .stat__label { color: var(--c-text-dim); font-size: 0.88rem; margin-top: 0.3rem; }
-.hero__disclaimer {
-  margin-top: 0.8rem;
-  font-size: 0.75rem;
-  color: #6d655d;
+/* ---------- 영상 임베드 ---------- */
+.video {
+  max-width: 760px;
+  margin: 3.2rem auto 0;
+}
+.video__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--c-line);
+  background: #000;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.5);
+}
+.video__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.video figcaption {
+  margin-top: 0.85rem;
+  font-size: 0.85rem;
+  color: var(--c-text-dim);
+  text-align: center;
 }
 
 /* ---------- 공통 섹션 ---------- */
@@ -272,6 +294,101 @@ ul, ol { list-style: none; }
 .card h3 { font-size: 1.15rem; margin-bottom: 0.55rem; }
 .card p { color: var(--c-text-dim); font-size: 0.93rem; }
 
+/* ---------- 왜 정육단인가 (핵심 3가지) ---------- */
+.why__list {
+  display: grid;
+  gap: 1.2rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.why-item {
+  display: flex;
+  gap: 1.6rem;
+  align-items: flex-start;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  padding: 2.1rem 2rem;
+  transition: border-color 0.2s ease;
+}
+.why-item:hover { border-color: rgba(200, 52, 44, 0.5); }
+.why-item__num {
+  flex: none;
+  font-size: 2.4rem;
+  font-weight: 900;
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--c-red);
+  font-variant-numeric: tabular-nums;
+}
+.why-item__body h3 { font-size: 1.35rem; margin-bottom: 0.3rem; }
+.why-item__lead {
+  color: var(--c-gold);
+  font-weight: 700;
+  font-size: 0.92rem;
+  margin-bottom: 0.8rem;
+}
+.why-item__body p { color: var(--c-text-dim); font-size: 0.96rem; }
+.why-item__body strong { color: var(--c-text); font-weight: 700; }
+
+/* ---------- 메뉴 경쟁력 ---------- */
+.menu__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+}
+.menu-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  padding: 2rem 1.7rem;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.menu-card:hover { transform: translateY(-4px); border-color: rgba(201, 168, 106, 0.5); }
+.menu-card--hero {
+  grid-column: 1 / -1;
+  background: linear-gradient(150deg, #2a201c, var(--c-surface));
+  border-color: rgba(200, 52, 44, 0.45);
+}
+.menu-card__tag {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  color: var(--c-gold);
+  border: 1px solid rgba(201, 168, 106, 0.45);
+  border-radius: 999px;
+  padding: 0.2rem 0.75rem;
+  margin-bottom: 0.85rem;
+}
+.menu-card--hero .menu-card__tag {
+  color: #fff;
+  background: var(--c-red);
+  border-color: transparent;
+}
+.menu-card h3 { font-size: 1.3rem; margin-bottom: 0.55rem; }
+.menu-card--hero h3 { font-size: 1.8rem; }
+.menu-card p { color: var(--c-text-dim); font-size: 0.95rem; }
+.menu-card strong { color: var(--c-gold); font-weight: 700; }
+
+/* ---------- 상권 정책 ---------- */
+.policy__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.2rem;
+  margin-top: 3rem;
+}
+.policy-card {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-red);
+  border-radius: var(--radius);
+  padding: 1.9rem 1.7rem;
+}
+.policy-card h3 { font-size: 1.2rem; margin-bottom: 0.6rem; }
+.policy-card p { color: var(--c-text-dim); font-size: 0.95rem; }
+.policy-card strong { color: var(--c-gold); font-weight: 700; }
+
 /* ---------- 매장 수익 ---------- */
 .revenue__grid {
   display: grid;
@@ -295,23 +412,25 @@ ul, ol { list-style: none; }
   margin-top: 0.2rem;
 }
 .rev-card__note { margin-top: 0.7rem; font-size: 0.85rem; color: #7d746b; }
-.revenue__quote {
-  margin: 3rem auto 0;
-  max-width: 620px;
+.revenue__legal {
+  max-width: 760px;
+  margin: 2.2rem auto 0;
+  padding: 1.1rem 1.3rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--c-line);
+  border-radius: 10px;
+  color: #8b827a;
+  font-size: 0.82rem;
+  line-height: 1.75;
+}
+.revenue__video { margin-top: 4rem; }
+.revenue__video-title {
   text-align: center;
-  font-size: 1.12rem;
-  color: var(--c-text);
-  border-left: 3px solid var(--c-red);
-  padding: 0.6rem 1.4rem;
-  font-style: italic;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--c-gold);
 }
-.revenue__quote cite {
-  display: block;
-  margin-top: 0.7rem;
-  color: var(--c-text-dim);
-  font-size: 0.88rem;
-  font-style: normal;
-}
+.revenue__video .video { margin-top: 1.5rem; }
 
 /* ---------- 창업 비용 ---------- */
 .cost__tables {
@@ -538,13 +657,21 @@ ul, ol { list-style: none; }
 .sticky-cta__tel { background: #241f1c; color: var(--c-gold); }
 .sticky-cta__form { background: linear-gradient(135deg, var(--c-red), var(--c-red-deep)); color: #fff; }
 
-/* ---------- 스크롤 리빌 ---------- */
-.reveal {
+/* ---------- 스크롤 리빌 ----------
+   .js 클래스가 붙었을 때만 숨긴다. JS가 실패하거나 꺼져 있으면
+   콘텐츠가 처음부터 보이므로 빈 페이지가 되지 않는다. */
+.js .reveal {
   opacity: 0;
   transform: translateY(26px);
   transition: opacity 0.7s ease, transform 0.7s ease;
 }
-.reveal.is-visible { opacity: 1; transform: none; }
+.js .reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .js .reveal { opacity: 1; transform: none; transition: none; }
+  .btn:hover, .card:hover, .menu-card:hover { transform: none; }
+}
 
 /* ---------- 반응형 ---------- */
 @media (max-width: 960px) {
@@ -576,7 +703,13 @@ ul, ol { list-style: none; }
 
   .story__values { grid-template-columns: 1fr; }
   .strength__grid, .revenue__grid { grid-template-columns: 1fr; }
+  .menu__grid, .policy__grid { grid-template-columns: 1fr; }
   .cost__tables { grid-template-columns: 1fr; }
   .form__row { grid-template-columns: 1fr; }
   .contact__form { padding: 1.8rem 1.2rem; }
+
+  .why-item { flex-direction: column; gap: 0.7rem; padding: 1.7rem 1.4rem; }
+  .why-item__num { font-size: 2rem; }
+  .menu-card--hero h3 { font-size: 1.45rem; }
+  .video { margin-top: 2.4rem; }
 }

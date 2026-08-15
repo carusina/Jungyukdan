@@ -14,31 +14,58 @@
   var burger = document.getElementById("burger");
   var nav = document.getElementById("nav");
   burger.addEventListener("click", function () {
-    nav.classList.toggle("is-open");
+    var open = nav.classList.toggle("is-open");
+    burger.setAttribute("aria-expanded", String(open));
   });
   nav.addEventListener("click", function (e) {
-    if (e.target.tagName === "A") nav.classList.remove("is-open");
+    if (e.target.tagName === "A") {
+      nav.classList.remove("is-open");
+      burger.setAttribute("aria-expanded", "false");
+    }
   });
 
+  var hasObserver = "IntersectionObserver" in window;
+
   /* ---------- 스크롤 리빌 ---------- */
-  var revealObserver = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.12 }
-  );
-  document.querySelectorAll(".reveal").forEach(function (el) {
-    revealObserver.observe(el);
-  });
+  var revealEls = document.querySelectorAll(".reveal");
+
+  if (hasObserver) {
+    var revealObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+    revealEls.forEach(function (el) {
+      revealObserver.observe(el);
+    });
+
+    /* 안전장치: 2초가 지나도 단 하나도 노출되지 않았다면 관찰자가
+       동작하지 않는 환경이므로, 등장 효과를 포기하고 전부 보여준다.
+       (하나라도 노출됐다면 정상 동작이므로 그대로 둔다) */
+    setTimeout(function () {
+      if (!document.querySelector(".reveal.is-visible")) {
+        revealEls.forEach(function (el) {
+          el.classList.add("is-visible");
+        });
+      }
+    }, 2000);
+  } else {
+    /* 구형 브라우저: 등장 효과 없이 바로 노출 */
+    revealEls.forEach(function (el) {
+      el.classList.add("is-visible");
+    });
+  }
 
   /* ---------- 숫자 카운트업 ---------- */
   function animateCount(el) {
     var target = parseInt(el.getAttribute("data-count"), 10);
+    if (isNaN(target)) return;
     var duration = 1400;
     var start = null;
     function tick(ts) {
@@ -50,20 +77,30 @@
     }
     requestAnimationFrame(tick);
   }
-  var countObserver = new IntersectionObserver(
-    function (entries) {
-      entries.forEach(function (entry) {
-        if (entry.isIntersecting) {
-          animateCount(entry.target);
-          countObserver.unobserve(entry.target);
-        }
-      });
-    },
-    { threshold: 0.5 }
-  );
-  document.querySelectorAll(".stat__num").forEach(function (el) {
-    countObserver.observe(el);
-  });
+  var statEls = document.querySelectorAll(".stat__num");
+
+  if (hasObserver) {
+    var countObserver = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            animateCount(entry.target);
+            countObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.5 }
+    );
+    statEls.forEach(function (el) {
+      countObserver.observe(el);
+    });
+  } else {
+    /* 구형 브라우저: 애니메이션 없이 최종 숫자만 표시 */
+    statEls.forEach(function (el) {
+      var target = parseInt(el.getAttribute("data-count"), 10);
+      if (!isNaN(target)) el.textContent = target.toLocaleString("ko-KR");
+    });
+  }
 
   /* ---------- 연락처 자동 하이픈 ---------- */
   var phoneInput = document.getElementById("phone");
@@ -82,39 +119,46 @@
   var form = document.getElementById("contactForm");
   var result = document.getElementById("formResult");
 
+  /* 필드 정의: 순서대로 검사하며, 첫 실패 지점에서 안내 */
+  var fields = [
+    { id: "name", message: "성함을 입력해 주세요." },
+    {
+      id: "phone",
+      message: "연락처를 010-0000-0000 형식으로 입력해 주세요.",
+      test: function (v) { return /^01[016789]-\d{3,4}-\d{4}$/.test(v); }
+    },
+    { id: "region", message: "희망 지역(시/도)을 선택해 주세요." },
+    { id: "district", message: "희망 지역(시/군/구)을 입력해 주세요." },
+    { id: "store", message: "점포 유무를 선택해 주세요." },
+    { id: "timing", message: "예상 창업 시기를 선택해 주세요." }
+  ];
+
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    var name = document.getElementById("name");
-    var phone = document.getElementById("phone");
-    var region = document.getElementById("region");
     var agree = document.getElementById("agree");
 
     /* 유효성 검사 */
-    [name, phone, region].forEach(function (el) {
-      el.classList.remove("is-error");
+    fields.forEach(function (f) {
+      document.getElementById(f.id).classList.remove("is-error");
     });
     result.className = "form__result";
     result.textContent = "";
 
-    if (!name.value.trim()) {
-      name.classList.add("is-error");
-      showError("이름을 입력해 주세요.");
-      name.focus();
-      return;
+    for (var i = 0; i < fields.length; i++) {
+      var f = fields[i];
+      var el = document.getElementById(f.id);
+      var value = el.value.trim();
+      var valid = f.test ? f.test(value) : value !== "";
+
+      if (!valid) {
+        el.classList.add("is-error");
+        showError(f.message);
+        el.focus();
+        return;
+      }
     }
-    if (!/^01[016789]-\d{3,4}-\d{4}$/.test(phone.value.trim())) {
-      phone.classList.add("is-error");
-      showError("연락처를 010-0000-0000 형식으로 입력해 주세요.");
-      phone.focus();
-      return;
-    }
-    if (!region.value) {
-      region.classList.add("is-error");
-      showError("창업 희망 지역을 선택해 주세요.");
-      region.focus();
-      return;
-    }
+
     if (!agree.checked) {
       showError("개인정보 수집·이용에 동의해 주세요.");
       return;
@@ -138,7 +182,7 @@
     e.preventDefault();
     alert(
       "개인정보 수집·이용 안내\n\n" +
-        "1. 수집 항목: 이름, 연락처, 창업 희망 지역, 문의 내용\n" +
+        "1. 수집 항목: 성함, 연락처, 희망 지역, 점포 유무, 예상 창업 시기, 문의 내용\n" +
         "2. 수집 목적: 창업 상담 및 안내\n" +
         "3. 보유 기간: 상담 완료 후 6개월\n\n" +
         "※ 동의를 거부할 수 있으나, 거부 시 상담 신청이 제한됩니다."
