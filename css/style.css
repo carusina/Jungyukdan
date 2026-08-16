@@ -468,6 +468,73 @@ ul, ol { list-style: none; }
 .policy-card p { color: var(--c-text-dim); font-size: 0.95rem; }
 .policy-card strong { color: var(--c-gold); font-weight: 700; }
 
+/* ---------- 비용 비교 (일반 고깃집 vs 정육단) ---------- */
+.compare {
+  max-width: 900px;
+  margin: 3.5rem auto 0;
+}
+.compare__title {
+  text-align: center;
+  font-size: 1.35rem;
+  font-weight: 800;
+  margin-bottom: 1.6rem;
+}
+.compare__table {
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.compare__head,
+.compare__row {
+  display: grid;
+  grid-template-columns: 0.8fr 1.1fr 1.1fr;
+  align-items: stretch;
+}
+.compare__row + .compare__row,
+.compare__head + .compare__row { border-top: 1px solid var(--c-line); }
+.compare__head {
+  background: rgba(255, 255, 255, 0.03);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+.compare__label {
+  padding: 1rem 1.1rem;
+  color: var(--c-text-dim);
+  font-size: 0.9rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.compare__col {
+  padding: 1rem 1.2rem;
+  font-size: 0.93rem;
+  display: flex;
+  align-items: center;
+}
+.compare__col--plain {
+  color: #857b72;
+  border-left: 1px solid var(--c-line);
+}
+.compare__col--ours {
+  color: var(--c-text);
+  font-weight: 600;
+  background: rgba(200, 52, 44, 0.07);
+  border-left: 1px solid rgba(200, 52, 44, 0.3);
+}
+.compare__head .compare__col--ours { color: var(--c-red); }
+.compare__head .compare__col--plain { color: #857b72; }
+.compare__foot {
+  margin-top: 1.2rem;
+  text-align: center;
+  color: var(--c-text-dim);
+  font-size: 0.9rem;
+}
+.compare__foot a {
+  color: var(--c-gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ---------- 소주 1,000원 마케팅 전략 ----------
    명암 교대에서 의도적으로 벗어나, 붉은 톤으로 따로 강조하는 구간 */
 .marketing {
@@ -888,6 +955,21 @@ ul, ol { list-style: none; }
   .cost__tables { grid-template-columns: 1fr; }
   .form__row { grid-template-columns: 1fr; }
   .contact__form { padding: 1.8rem 1.2rem; }
+
+  /* 비용 비교표: 항목명을 위로 빼고 그 아래 두 칸을 나란히 */
+  .compare__head { grid-template-columns: 1fr 1fr; }
+  .compare__head .compare__label { display: none; }
+  .compare__row { grid-template-columns: 1fr 1fr; }
+  .compare__row .compare__label {
+    grid-column: 1 / -1;
+    padding: 0.9rem 1rem 0.35rem;
+    color: var(--c-gold);
+    font-size: 0.82rem;
+  }
+  .compare__col { padding: 0.6rem 1rem 0.95rem; font-size: 0.85rem; align-items: flex-start; }
+  .compare__head .compare__col { padding: 0.85rem 1rem; }
+  .compare__row .compare__col--plain { border-left: none; }
+  .compare__title { font-size: 1.15rem; }
 
   .why-item { flex-direction: column; gap: 0.7rem; padding: 1.7rem 1.4rem; }
   .why-item__num { font-size: 2rem; }

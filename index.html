@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
   <!-- 파일을 수정하면 ?v= 뒤 숫자를 올려 방문자의 캐시를 무효화한다 -->
-  <link rel="stylesheet" href="css/style.css?v=3" />
+  <link rel="stylesheet" href="css/style.css?v=4" />
   <!-- 스크롤 등장 효과는 JS가 살아있을 때만 적용. 미적용 시 콘텐츠가 그냥 보이게 둔다. -->
   <script>document.documentElement.classList.add("js");</script>
 </head>
@@ -189,6 +189,10 @@
     <div class="section__inner">
       <p class="section__eyebrow reveal">SYSTEM</p>
       <h2 class="section__title reveal">본사가 다 하고, 점주는 홀에 집중합니다</h2>
+      <p class="section__desc reveal">
+        체계적인 운영 시스템으로 <strong>인건비와 원가를 함께 낮춥니다.</strong><br />
+        고깃집에서 가장 크고 가장 줄이기 어려운 두 가지 비용입니다.
+      </p>
       <div class="strength__grid">
         <article class="card reveal">
           <span class="card__icon">🏭</span>
@@ -202,8 +206,8 @@
         </article>
         <article class="card reveal">
           <span class="card__icon">🚚</span>
-          <h3>2일 1회 물류 배송</h3>
-          <p>이틀에 한 번 정기 배송으로 신선도를 유지하면서, 매장에 재고가 과하게 쌓이지 않도록 합니다.</p>
+          <h3>3일 1회 물류 배송</h3>
+          <p>사흘에 한 번 정기 배송으로 신선도를 유지하면서, 매장에 재고가 과하게 쌓이지 않도록 합니다.</p>
         </article>
         <article class="card reveal">
           <span class="card__icon">📊</span>
@@ -220,6 +224,48 @@
           <h3>본사 직접 SNS 마케팅</h3>
           <p>대행사를 거치지 않고 대표가 직접 인스타그램 광고와 숏폼 콘텐츠를 기획·집행합니다.</p>
         </article>
+      </div>
+
+      <!-- 인건비·원가가 어디서 줄어드는지 비교 -->
+      <div class="compare reveal">
+        <h3 class="compare__title">비용은 어디서 줄어드는가</h3>
+        <div class="compare__table">
+          <div class="compare__head">
+            <span class="compare__label"></span>
+            <span class="compare__col compare__col--plain">일반 고깃집</span>
+            <span class="compare__col compare__col--ours">정육단</span>
+          </div>
+
+          <div class="compare__row">
+            <span class="compare__label">원육 손질</span>
+            <span class="compare__col compare__col--plain">매장에서 직접 커팅·정형</span>
+            <span class="compare__col compare__col--ours">본사에서 손질 완료 후 납품</span>
+          </div>
+          <div class="compare__row">
+            <span class="compare__label">주방 인력</span>
+            <span class="compare__col compare__col--plain">육부장 등 전문 인력 상시 필요</span>
+            <span class="compare__col compare__col--ours">전문 인력 없이 최소 인원 운영</span>
+          </div>
+          <div class="compare__row">
+            <span class="compare__label">손질 로스</span>
+            <span class="compare__col compare__col--plain">자투리만큼 원가에 반영</span>
+            <span class="compare__col compare__col--ours">매장 단계 로스 0%</span>
+          </div>
+          <div class="compare__row">
+            <span class="compare__label">발주·재고</span>
+            <span class="compare__col compare__col--plain">경험과 감에 의존</span>
+            <span class="compare__col compare__col--ours">본사 데이터 기반 수량표 제공</span>
+          </div>
+          <div class="compare__row">
+            <span class="compare__label">점주의 시간</span>
+            <span class="compare__col compare__col--plain">주방에 묶임</span>
+            <span class="compare__col compare__col--ours">홀 접객과 단골 관리에 집중</span>
+          </div>
+        </div>
+        <p class="compare__foot">
+          줄어든 인건비와 원가는 그대로 마진이 되고, 그중 일부는
+          <a href="#marketing">고객 혜택으로 다시 투자</a>됩니다.
+        </p>
       </div>
     </div>
   </section>
@@ -627,7 +673,7 @@
         </details>
         <details class="faq__item">
           <summary>발주와 재고 관리가 어렵지 않을까요?</summary>
-          <p>본사가 매장별 3일 평균 판매 데이터를 분석해 필요 수량표를 가이드해 드립니다. 물류는 2일에 한 번 배송되므로 재고가 과하게 쌓이지 않고, 발주량을 직접 감으로 정하실 필요가 없습니다.</p>
+          <p>본사가 매장별 3일 평균 판매 데이터를 분석해 필요 수량표를 가이드해 드립니다. 물류는 3일에 한 번 배송되므로 재고가 과하게 쌓이지 않고, 발주량을 직접 감으로 정하실 필요가 없습니다.</p>
         </details>
         <details class="faq__item">
           <summary>매장은 어느 정도 규모로 준비해야 하나요?</summary>
@@ -752,6 +798,6 @@
     <a href="#contact" class="sticky-cta__form">창업 문의 남기기</a>
   </div>
 
-  <script src="js/main.js?v=3"></script>
+  <script src="js/main.js?v=4"></script>
 </body>
 </html>
