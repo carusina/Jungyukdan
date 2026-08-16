@@ -101,6 +101,23 @@ Vercel 프로젝트 → Settings → Environment Variables에서 추가합니다
 배포된 사이트에서 폼을 실제로 한 번 제출해 메일이 도착하는지 확인하세요.
 실패 시 Vercel 대시보드 → Deployments → Functions 로그에서 원인을 볼 수 있습니다.
 
+### 문제 해결
+
+폼 제출 시 **502 오류**가 나면 함수는 정상 실행됐지만 Resend가 발송을 거부한 것입니다.
+Vercel 대시보드 → 프로젝트 → **Logs**(또는 Deployments → 해당 배포 → Functions)에서
+`Resend 전송 실패` 로그를 찾으면 **추정 원인과 조치 방법**이 한국어로 적혀 있습니다.
+
+가장 흔한 원인은 다음과 같습니다.
+
+| 증상 | 원인 | 조치 |
+|---|---|---|
+| 502 (오류 403), 로그에 `only send testing emails to your own` | 테스트 발신 주소는 Resend **가입 이메일로만** 발송 가능 | `INQUIRY_TO`를 Resend 가입 이메일과 똑같이 맞추거나, 도메인 인증 후 `INQUIRY_FROM` 설정 |
+| 502 (오류 403), 로그에 `not verified` | `INQUIRY_FROM` 도메인이 미인증 | Resend → Domains에서 DNS 레코드 등록 후 인증 |
+| 502 (오류 401) | API 키가 잘못됨 | 키 재발급 후 `RESEND_API_KEY` 갱신 → **재배포** |
+| 500 | 환경변수 자체가 없음 | `RESEND_API_KEY`, `INQUIRY_TO` 등록 → **재배포** |
+
+> 환경변수는 등록만으로 적용되지 않습니다. 반드시 **재배포**해야 합니다.
+
 ### 스팸 대응
 
 `company`라는 숨김 필드(허니팟)를 두어 자동 봇 제출을 걸러냅니다.

@@ -184,10 +184,26 @@ module.exports = async function handler(req, res) {
 
     if (!response.ok) {
       const detail = await response.text();
-      console.error("Resend 전송 실패:", response.status, detail);
+
+      /* 로그에 원인을 한국어로 남겨, Vercel 로그만 봐도 바로 조치할 수 있게 한다 */
+      console.error(
+        [
+          "───────── Resend 전송 실패 ─────────",
+          "HTTP 상태: " + response.status,
+          "Resend 응답: " + detail,
+          "보낸 주소(INQUIRY_FROM): " + from,
+          "받는 주소(INQUIRY_TO): " + to,
+          "추정 원인: " + diagnose(response.status, detail, from),
+          "──────────────────────────────────"
+        ].join("\n")
+      );
+
       return res.status(502).json({
         ok: false,
-        error: "메일 발송에 실패했습니다. 잠시 후 다시 시도하거나 전화로 문의해 주세요."
+        error:
+          "메일 발송에 실패했습니다. 잠시 후 다시 시도하거나 전화로 문의해 주세요. (오류 " +
+          response.status +
+          ")"
       });
     }
 
@@ -200,6 +216,46 @@ module.exports = async function handler(req, res) {
     });
   }
 };
+
+/**
+ * Resend 오류를 사람이 읽을 수 있는 원인으로 바꿔준다.
+ * 설정 실수가 대부분이라, 로그만 보고 바로 고칠 수 있도록 조치 방법까지 적는다.
+ */
+function diagnose(status, detail, from) {
+  const text = String(detail || "");
+  const isTestSender = /resend\.dev/.test(from);
+
+  if (/only send testing emails to your own/i.test(text)) {
+    return (
+      "Resend 테스트 발신 주소는 '가입 시 사용한 본인 이메일'로만 보낼 수 있습니다. " +
+      "→ INQUIRY_TO를 Resend 가입 이메일과 동일하게 바꾸거나, 도메인 인증 후 INQUIRY_FROM을 자체 도메인 주소로 설정하세요."
+    );
+  }
+  if (/domain is not verified|not verified/i.test(text)) {
+    return (
+      "INQUIRY_FROM에 지정한 도메인이 Resend에서 인증되지 않았습니다. " +
+      "→ Resend → Domains에서 DNS 레코드를 등록해 인증을 마치세요."
+    );
+  }
+  if (status === 401 || /api key|unauthorized/i.test(text)) {
+    return (
+      "API 키가 잘못되었거나 만료되었습니다. " +
+      "→ Resend에서 키를 다시 발급받아 RESEND_API_KEY를 갱신하고 재배포하세요."
+    );
+  }
+  if (status === 403) {
+    return isTestSender
+      ? "테스트 발신 주소의 전송 제한에 걸렸습니다. → INQUIRY_TO를 Resend 가입 이메일로 맞추거나 도메인을 인증하세요."
+      : "발신 권한이 없습니다. → INQUIRY_FROM 주소와 도메인 인증 상태를 확인하세요.";
+  }
+  if (status === 422) {
+    return "요청 형식이 거부되었습니다. → INQUIRY_FROM 형식(예: 정육단 <mail@도메인>)과 INQUIRY_TO 주소를 확인하세요.";
+  }
+  if (status === 429) {
+    return "발송 한도를 초과했습니다. → Resend 대시보드에서 사용량을 확인하세요.";
+  }
+  return "위 Resend 응답 내용을 확인하세요.";
+}
 
 function safeParse(text) {
   try {
