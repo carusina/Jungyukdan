@@ -371,6 +371,85 @@ ul, ol { list-style: none; }
 .menu-card p { color: var(--c-text-dim); font-size: 0.95rem; }
 .menu-card strong { color: var(--c-gold); font-weight: 700; }
 
+/* ---------- 매장 연혁 ---------- */
+.stores__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.2rem;
+}
+.store {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.store:hover { transform: translateY(-4px); border-color: rgba(201, 168, 106, 0.5); }
+.store__thumb {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  background: #16130f;
+  overflow: hidden;
+}
+.store__thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.store__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(14, 13, 12, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--c-line);
+  color: var(--c-gold);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  padding: 0.28rem 0.8rem;
+  border-radius: 999px;
+}
+.store__badge--flagship {
+  background: var(--c-red);
+  border-color: transparent;
+  color: #fff;
+}
+.store__body { padding: 1.2rem 1.3rem 1.5rem; }
+.store__name { font-size: 1.2rem; margin-bottom: 0.2rem; }
+.store__area { color: var(--c-text-dim); font-size: 0.88rem; }
+.store__desc {
+  margin-top: 0.8rem;
+  color: var(--c-text-dim);
+  font-size: 0.93rem;
+}
+
+/* 본점은 가로로 넓게 강조 */
+.store--flagship {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  border-color: rgba(200, 52, 44, 0.45);
+}
+.store--flagship .store__thumb { aspect-ratio: auto; min-height: 260px; }
+.store--flagship .store__body {
+  padding: 2rem 2rem 2.1rem;
+  align-self: center;
+}
+.store--flagship .store__name { font-size: 1.75rem; }
+
+.stores__cta {
+  margin-top: 3rem;
+  text-align: center;
+}
+.stores__cta-text {
+  color: var(--c-text-dim);
+  margin-bottom: 1.1rem;
+  font-size: 1.02rem;
+}
+.stores__cta-text strong { color: var(--c-gold); font-weight: 800; }
+
 /* ---------- 상권 정책 ---------- */
 .policy__grid {
   display: grid;
@@ -677,6 +756,7 @@ ul, ol { list-style: none; }
 @media (max-width: 960px) {
   .strength__grid, .revenue__grid { grid-template-columns: repeat(2, 1fr); }
   .process__list { grid-template-columns: repeat(2, 1fr); }
+  .stores__grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 720px) {
@@ -712,4 +792,15 @@ ul, ol { list-style: none; }
   .why-item__num { font-size: 2rem; }
   .menu-card--hero h3 { font-size: 1.45rem; }
   .video { margin-top: 2.4rem; }
+
+  /* 매장 연혁: 2열 유지하되 본점만 전체 폭 */
+  .stores__grid { grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
+  .store--flagship { grid-template-columns: 1fr; }
+  .store--flagship .store__thumb { aspect-ratio: 4 / 3; min-height: 0; }
+  .store--flagship .store__body { padding: 1.3rem 1.3rem 1.6rem; }
+  .store--flagship .store__name { font-size: 1.4rem; }
+  .store__body { padding: 0.95rem 1rem 1.2rem; }
+  .store__name { font-size: 1.02rem; }
+  .store__area { font-size: 0.82rem; }
+  .store__badge { font-size: 0.7rem; padding: 0.22rem 0.6rem; }
 }

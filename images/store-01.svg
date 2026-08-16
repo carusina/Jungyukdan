@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="범일 본점 매장 사진 준비 중">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#272220"/>
+      <stop offset="1" stop-color="#16130f"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <rect x="24" y="24" width="752" height="552" rx="10" fill="none" stroke="#3a3430" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="400" y="252" text-anchor="middle" font-family="Pretendard, 'Malgun Gothic', sans-serif" font-size="44" font-weight="700" fill="#c9a86a" letter-spacing="2">정육단</text>
+  <text x="400" y="322" text-anchor="middle" font-family="Pretendard, 'Malgun Gothic', sans-serif" font-size="54" font-weight="800" fill="#f3efea">범일 본점</text>
+  <text x="400" y="372" text-anchor="middle" font-family="Pretendard, 'Malgun Gothic', sans-serif" font-size="26" fill="#b5aca3">부산 범일동</text>
+  <text x="400" y="452" text-anchor="middle" font-family="Pretendard, 'Malgun Gothic', sans-serif" font-size="22" fill="#7d746b">매장 사진 준비 중</text>
+</svg>
