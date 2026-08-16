@@ -164,18 +164,73 @@
       return;
     }
 
-    /* TODO: 실제 서비스 시 아래를 백엔드/폼 서비스 연동으로 교체하세요.
-       예) fetch("/api/franchise-inquiry", { method: "POST", body: new FormData(form) })
-       또는 Google Forms, Formspree, 카카오톡 채널 연동 등 */
-    result.classList.add("is-success");
-    result.textContent = "상담 신청이 접수되었습니다. 담당자가 24시간 이내에 연락드리겠습니다.";
-    form.reset();
-
-    function showError(msg) {
-      result.classList.add("is-error");
-      result.textContent = msg;
-    }
+    submit(showError);
   });
+
+  function showError(msg) {
+    result.className = "form__result is-error";
+    result.textContent = msg;
+  }
+
+  /* ---------- 서버로 전송 ---------- */
+  var submitBtn = form.querySelector('button[type="submit"]');
+  var submitLabel = submitBtn.textContent;
+  var sending = false;
+
+  function submit(onError) {
+    if (sending) return;
+    sending = true;
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = "전송 중...";
+    result.className = "form__result";
+    result.textContent = "";
+
+    var payload = {
+      name: document.getElementById("name").value.trim(),
+      phone: document.getElementById("phone").value.trim(),
+      region: document.getElementById("region").value,
+      district: document.getElementById("district").value.trim(),
+      store: document.getElementById("store").value,
+      timing: document.getElementById("timing").value,
+      message: document.getElementById("message").value.trim(),
+      company: document.getElementById("company").value
+    };
+
+    fetch("/api/inquiry", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          return { ok: res.ok, data: data };
+        });
+      })
+      .then(function (res) {
+        if (res.ok && res.data.ok) {
+          result.className = "form__result is-success";
+          result.textContent =
+            "상담 신청이 접수되었습니다. 담당자가 24시간 이내에 연락드리겠습니다.";
+          form.reset();
+        } else {
+          onError(
+            res.data.error ||
+              "접수에 실패했습니다. 잠시 후 다시 시도하거나 전화로 문의해 주세요."
+          );
+        }
+      })
+      .catch(function () {
+        onError(
+          "네트워크 연결을 확인해 주세요. 문제가 계속되면 전화로 문의해 주세요."
+        );
+      })
+      .then(function () {
+        sending = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitLabel;
+      });
+  }
 
   /* ---------- 개인정보 안내 ---------- */
   document.getElementById("privacyLink").addEventListener("click", function (e) {

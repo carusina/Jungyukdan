@@ -10,7 +10,8 @@
   <meta property="og:type" content="website" />
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- 파일을 수정하면 ?v= 뒤 숫자를 올려 방문자의 캐시를 무효화한다 -->
+  <link rel="stylesheet" href="css/style.css?v=2" />
   <!-- 스크롤 등장 효과는 JS가 살아있을 때만 적용. 미적용 시 콘텐츠가 그냥 보이게 둔다. -->
   <script>document.documentElement.classList.add("js");</script>
 </head>
@@ -660,6 +661,12 @@
           <textarea id="message" name="message" rows="4" placeholder="궁금하신 점을 자유롭게 남겨주세요. (희망 평수, 예산, 외식업 경험 등)"></textarea>
         </div>
 
+        <!-- 스팸 봇 유인용. 사람에게는 보이지 않으며, 값이 채워지면 서버에서 걸러낸다. -->
+        <div class="form__trap" aria-hidden="true">
+          <label for="company">회사명</label>
+          <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" />
+        </div>
+
         <label class="form__agree">
           <input type="checkbox" id="agree" required />
           <span>개인정보 수집·이용에 동의합니다. <a href="#" id="privacyLink">자세히 보기</a></span>
@@ -698,6 +705,6 @@
     <a href="#contact" class="sticky-cta__form">창업 문의 남기기</a>
   </div>
 
-  <script src="js/main.js"></script>
+  <script src="js/main.js?v=2"></script>
 </body>
 </html>

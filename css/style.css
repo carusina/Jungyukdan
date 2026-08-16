@@ -673,6 +673,14 @@ ul, ol { list-style: none; }
 .form__field textarea { resize: vertical; min-height: 110px; }
 .form__field input.is-error,
 .form__field select.is-error { border-color: var(--c-red); }
+/* 스팸 봇 유인 필드: 화면 밖으로 완전히 밀어낸다 (display:none은 봇이 감지함) */
+.form__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
 .form__agree {
   display: flex;
   align-items: center;
