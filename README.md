@@ -9,7 +9,10 @@
 ├── css/style.css     스타일 (블랙 & 딥레드 톤, 반응형)
 ├── js/main.js        스크롤 등장 효과, 카운터, 폼 검증·전송
 ├── api/inquiry.js    문의 접수 → 이메일 전송 (서버리스 함수)
-├── images/           매장 사진 (연산점만 자리표시 SVG)
+├── images/           매장 사진 (연산점만 자리표시 SVG), 공유 이미지, 앱 아이콘
+├── robots.txt        검색엔진 수집 규칙
+├── sitemap.xml       검색엔진 제출용 주소 목록
+├── favicon.ico       브라우저 탭 아이콘
 └── vercel.json       Vercel 배포 설정
 ```
 
@@ -70,6 +73,38 @@ python -m http.server 8756
 ## 배포
 
 Vercel에 GitHub 저장소가 연결되어 있으며, `main` 브랜치에 push하면 자동으로 배포됩니다.
+
+**운영 주소: https://www.jungyukdan.com**
+`jungyukdan.com`(www 없음)은 www로 308 리다이렉트됩니다. 따라서 canonical·사이트맵·
+공유 이미지 주소는 모두 **www 붙은 주소**를 기준으로 작성되어 있습니다.
+도메인을 바꾸거나 www 없는 주소를 대표로 바꾸려면 아래 4곳을 함께 고쳐야 합니다.
+
+- `index.html`의 `canonical`, `og:url`, `og:image`, JSON-LD의 `url`/`logo`/`image`
+- `robots.txt`의 `Sitemap:` 줄
+- `sitemap.xml`의 `<loc>`
+
+## 검색 노출 (SEO)
+
+페이지 쪽 준비는 끝나 있습니다.
+
+- `canonical`, `robots`, Open Graph, 트위터 카드 메타 태그
+- 구조화 데이터 2종 — `Organization`(사업자 정보), `FAQPage`(FAQ 8개)
+  - **FAQ 구조화 데이터는 화면에 보이는 문구와 반드시 같아야 합니다.**
+    FAQ 문구를 수정하면 `<head>`의 JSON-LD도 함께 고치세요. 다르면 구글이 무시하거나 불이익을 줍니다.
+- `robots.txt`, `sitemap.xml`
+- 공유 썸네일 `images/og-image.jpg` (1200×630), 파비콘, 애플 터치 아이콘
+
+남은 것은 **검색엔진에 등록하는 일**이며, 사람이 직접 해야 합니다.
+
+| 검색엔진 | 주소 | 비고 |
+|---|---|---|
+| 네이버 | https://searchadvisor.naver.com | 국내 유입 대부분. 가장 중요 |
+| 구글 | https://search.google.com/search-console | 사이트맵 제출 |
+| 다음 | https://register.search.daum.net | 등록 신청만 하면 됨 |
+
+네이버·구글은 소유 확인을 위해 HTML 파일이나 메타 태그를 요구합니다.
+**메타 태그 방식**을 고르면 `index.html`의 `<head>`에 한 줄 추가하면 되고,
+**파일 방식**이면 받은 파일을 저장소 최상위에 두고 push하면 됩니다.
 
 ## 문의 폼 이메일 설정 (필수)
 
